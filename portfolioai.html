@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio</title>
+
+<style>
+
+html{
+scroll-behavior:smooth;
+}
+
+/* 🔥 Modern Gradient Background */
+body{
+font-family: Arial, sans-serif;
+margin:0;
+padding:0;
+background:linear-gradient(135deg, #667eea, #764ba2);
+color:#333;
+transition:0.3s;
+}
+
+/* Header */
+header{
+background:rgba(0,0,0,0.7);
+color:white;
+text-align:center;
+padding:20px;
+backdrop-filter:blur(5px);
+}
+
+/* Nav */
+nav{
+background:rgba(0,0,0,0.6);
+text-align:center;
+padding:10px;
+}
+
+nav a{
+color:white;
+margin:0 15px;
+text-decoration:none;
+font-weight:bold;
+}
+
+nav a:hover{
+color:#00ffcc;
+}
+
+/* Container */
+.container{
+width:80%;
+margin:auto;
+padding:20px;
+}
+
+/* Sections */
+section{
+background:rgba(255,255,255,0.9);
+margin:20px 0;
+padding:20px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+
+/* Animation start */
+opacity:0;
+transform:translateY(40px);
+}
+
+/* Footer */
+footer{
+background:rgba(0,0,0,0.7);
+color:white;
+text-align:center;
+padding:10px;
+}
+
+/* Inputs */
+input, textarea{
+width:250px;
+padding:8px;
+margin-top:5px;
+border-radius:5px;
+border:1px solid #ccc;
+}
+
+/* Button */
+button{
+padding:10px 15px;
+background:#667eea;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#5a67d8;
+}
+
+/* LinkedIn Button */
+.linkedin-btn{
+display:inline-block;
+margin-top:15px;
+padding:10px 15px;
+background:#0077b5;
+color:white;
+text-decoration:none;
+border-radius:6px;
+transition:0.3s;
+}
+
+.linkedin-btn:hover{
+background:#005582;
+}
+
+/* Dark Mode */
+.dark{
+background:#121212;
+color:white;
+}
+
+.dark section{
+background:#1e1e1e;
+}
+
+/* Toggle */
+.theme-toggle{
+position:fixed;
+top:15px;
+right:15px;
+font-size:25px;
+cursor:pointer;
+}
+
+/* Responsive */
+@media (max-width:768px){
+.container{
+width:90%;
+}
+input, textarea{
+width:100%;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="theme-toggle" id="icon">🌙</div>
+
+<header>
+<h1>MY PORTFOLIO</h1>
+</header>
+
+<nav>
+<a href="#about">About</a>
+<a href="#skills">Skills</a>
+<a href="#projects">Projects</a>
+<a href="#contact">Contact</a>
+</nav>
+
+<div class="container">
+
+<section id="about">
+<h2>About Me</h2>
+<p>Myself Divyansh Saini. I am studying Web Development and pursuing BCA.</p>
+</section>
+
+<section id="skills">
+<h2>Skills</h2>
+<ul>
+<li>Java</li>
+<li>MS Office</li>
+<li>Basic HTML</li>
+</ul>
+</section>
+
+<section id="projects">
+<h2>Project</h2>
+<p>Student Result and Marksheet Generator System</p>
+</section>
+
+<section id="contact">
+<h2>Contact Me</h2>
+
+<form>
+
+<label>Name</label><br>
+<input type="text" id="name"><br><br>
+
+<label>Email</label><br>
+<input type="email" id="email"><br><br>
+
+<label>Message</label><br>
+<textarea id="message" rows="4"></textarea><br><br>
+
+<button type="submit">Send Message</button>
+
+<p id="error"></p>
+
+</form>
+
+<!-- 🔗 LinkedIn -->
+<a href="https://www.linkedin.com/in/divyansh-saini-b6462237a/" target="_blank" class="linkedin-btn">
+Visit My LinkedIn
+</a>
+
+</section>
+
+</div>
+
+<footer>
+<p>© 2026 Divyansh Saini</p>
+</footer>
+
+<script>
+
+// Elements
+const body = document.body;
+const icon = document.getElementById("icon");
+const form = document.querySelector("form");
+const error = document.getElementById("error");
+
+// 🔥 Page Load Animation
+window.onload = () => {
+document.querySelectorAll("section").forEach((sec,i) => {
+setTimeout(() => {
+sec.style.transition = "0.6s ease";
+sec.style.opacity = "1";
+sec.style.transform = "translateY(0)";
+}, i * 200);
+});
+};
+
+// 🌙 Dark Mode
+icon.addEventListener("click", () => {
+body.classList.toggle("dark");
+icon.textContent = body.classList.contains("dark") ? "☀" : "🌙";
+});
+
+// ✅ Form Validation
+form.addEventListener("submit", function(e){
+e.preventDefault();
+
+let name = document.getElementById("name").value.trim();
+let email = document.getElementById("email").value.trim();
+let message = document.getElementById("message").value.trim();
+
+if(!name || !email || !message){
+showMessage("⚠ Fill all fields","red");
+return;
+}
+
+if(!validateEmail(email)){
+showMessage("⚠ Invalid Email","red");
+return;
+}
+
+showMessage("✅ Message Sent Successfully!","green");
+form.reset();
+
+});
+
+function validateEmail(email){
+return /^[^ ]+@[^ ]+\.[a-z]{2,3}$/.test(email);
+}
+
+function showMessage(msg,color){
+error.textContent = msg;
+error.style.color = color;
+}
+
+</script>
+
+</body>
+</html>
