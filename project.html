@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alex Morgan — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── RESET ─── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; background-color: #f0f2f5; }
+
+    /* ─── TOKENS ─── */
+    :root {
+      --white:   #f0f2f5;
+      --off:     #e6e9ee;
+      --light:   #d8dce3;
+      --border:  #c8cdd6;
+      --muted:   #7a8494;
+      --ink:     #1a1f2e;
+      --accent:  #1a56db;
+      --accent2: #e8f0fe;
+      --ff-serif: 'Cormorant Garamond', Georgia, serif;
+      --ff-sans:  'Instrument Sans', sans-serif;
+      --max: 1200px;
+      --pad: clamp(1.5rem, 5vw, 4rem);
+    }
+
+    body {
+      background: #f0f2f5;
+      color: var(--ink);
+      font-family: var(--ff-sans);
+      font-size: 1rem;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+
+    /* ─── NAVBAR ─── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(240,242,245,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow .3s;
+    }
+    #navbar.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,.06); }
+    .nav-inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-name {
+      font-family: var(--ff-serif); font-size: 1.35rem; font-weight: 400;
+      letter-spacing: .01em; color: var(--ink); text-decoration: none;
+    }
+    .nav-name span { font-style: italic; color: var(--accent); }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      font-size: .82rem; font-weight: 500; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--muted); text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+    .nav-btn {
+      font-size: .82rem; font-weight: 600; letter-spacing: .04em;
+      padding: .55rem 1.4rem; background: var(--accent); color: var(--white);
+      text-decoration: none; border-radius: 4px;
+      transition: opacity .2s, transform .2s;
+    }
+    .nav-btn:hover { opacity: .88; transform: translateY(-1px); }
+
+    /* ─── HERO ─── */
+    
+      padding-top: 120px; padding-bottom: 88px;
+      background: #f0f2f5; position: relative; overflow: hidden;
+    }
+    #hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px; opacity: .45; pointer-events: none;
+    }
+    #hero::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 160px;
+      background: linear-gradient(to bottom, transparent, #f0f2f5); pointer-events: none;
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+      display: grid; grid-template-columns: 1fr 380px; gap: 4rem; align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--accent); background: var(--accent2);
+      padding: .35rem .9rem; border-radius: 999px; margin-bottom: 1.6rem;
+      opacity: 0; animation: fadeUp .6s .1s ease forwards;
+    }
+    .hero-badge::before {
+      content: ''; width: 7px; height: 7px; background: var(--accent);
+      border-radius: 50%; animation: blink 1.8s ease infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+    .hero-title {
+      font-family: var(--ff-serif); font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 300; line-height: 1.08; letter-spacing: -.02em; color: var(--ink);
+      opacity: 0; animation: fadeUp .7s .2s ease forwards;
+    }
+    .hero-title em { font-style: italic; font-weight: 300; color: var(--accent); }
+    .hero-title strong { font-weight: 600; }
+    .hero-desc {
+      margin-top: 1.8rem; font-size: 1.05rem; color: var(--muted);
+      max-width: 480px; line-height: 1.75;
+      opacity: 0; animation: fadeUp .7s .35s ease forwards;
+    }
+    .hero-actions {
+      margin-top: 2.4rem; display: flex; gap: 1rem; align-items: center;
+      opacity: 0; animation: fadeUp .7s .5s ease forwards;
+    }
+    .btn-solid {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .75rem 1.8rem; background: var(--ink); color: var(--white);
+      font-size: .88rem; font-weight: 600; text-decoration: none; border-radius: 4px;
+      transition: background .2s, transform .2s;
+    }
+    .btn-solid:hover { background: var(--accent); transform: translateY(-2px); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .75rem 1.8rem; border: 1.5px solid var(--border);
+      color: var(--ink); font-size: .88rem; font-weight: 500;
+      text-decoration: none; border-radius: 4px;
+      transition: border-color .2s, transform .2s;
+    }
+    .btn-outline:hover { border-color: var(--ink); transform: translateY(-2px); }
+
+    /* hero card */
+    .hero-card {
+      background: #e6e9ee; border: 1px solid var(--border); border-radius: 12px;
+      padding: 2rem; display: flex; flex-direction: column; gap: 1.4rem;
+      opacity: 0; animation: fadeUp .8s .4s ease forwards;
+      box-shadow: 0 8px 40px rgba(0,0,0,.06);
+    }
+    .avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, #c8d8f8, #e8f0fe);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--ff-serif); font-size: 1.9rem; font-weight: 300; color: var(--accent);
+      border: 2px solid var(--white); box-shadow: 0 2px 12px rgba(26,86,219,.12);
+    }
+    .card-name { font-family: var(--ff-serif); font-size: 1.3rem; font-weight: 400; color: var(--ink); }
+    .card-role { font-size: .8rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: .2rem; }
+    .card-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .8rem;
+      padding-top: 1rem; border-top: 1px solid var(--border);
+    }
+    .card-stat-val { font-family: var(--ff-serif); font-size: 1.9rem; font-weight: 300; color: var(--ink); line-height: 1; }
+    .card-stat-lbl { font-size: .72rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: .25rem; }
+    .card-available {
+      display: inline-flex; align-items: center; gap: .45rem;
+      font-size: .78rem; font-weight: 500; color: #16a34a;
+      background: #f0fdf4; padding: .4rem .9rem; border-radius: 999px; align-self: flex-start;
+    }
+    .card-available::before { content: ''; width: 7px; height: 7px; background: #22c55e; border-radius: 50%; }
+
+    /* ─── CLIENTS ─── */
+    #clients {
+      padding: 2.8rem 0;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: #e6e9ee;
+    }
+    .clients-inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+      display: flex; align-items: center; gap: 3rem; flex-wrap: wrap;
+    }
+    .clients-label {
+      font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--muted); white-space: nowrap; flex-shrink: 0;
+    }
+    .clients-logos { display: flex; gap: 3rem; flex-wrap: wrap; align-items: center; }
+    .logo-item {
+      font-family: var(--ff-serif); font-size: 1.1rem; font-weight: 600;
+      color: var(--border); letter-spacing: .04em;
+      transition: color .2s; user-select: none;
+    }
+    .logo-item:hover { color: var(--muted); }
+
+    /* ─── SECTION SHARED ─── */
+    section { padding: 96px 0; }
+    .section-tag {
+      font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1rem;
+    }
+    .section-heading {
+      font-family: var(--ff-serif); font-size: clamp(2rem, 4vw, 3.4rem);
+      font-weight: 300; line-height: 1.15; color: var(--ink);
+    }
+    .section-heading em { font-style: italic; color: var(--muted); }
+    .section-sub { margin-top: 1rem; font-size: .95rem; color: var(--muted); max-width: 480px; line-height: 1.75; }
+
+    /* ─── ABOUT ─── */
+    #about { background: #f0f2f5; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .about-body { font-size: .97rem; color: var(--muted); line-height: 1.85; }
+    .about-body p + p { margin-top: 1.2rem; }
+    .about-body strong { color: var(--ink); font-weight: 600; }
+    .skills-grid { margin-top: 2.4rem; display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+    .skill-item {
+      display: flex; align-items: center; gap: .65rem;
+      font-size: .88rem; color: var(--ink); font-weight: 500;
+    }
+    .skill-item::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+
+    /* ─── PORTFOLIO ─── */
+    #portfolio { background: #e6e9ee; }
+    .portfolio-header {
+      display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 3rem;
+    }
+    .view-all {
+      font-size: .82rem; font-weight: 600; letter-spacing: .04em;
+      color: var(--accent); text-decoration: none;
+      display: inline-flex; align-items: center; gap: .4rem; transition: gap .2s;
+    }
+    .view-all:hover { gap: .7rem; }
+    .view-all::after { content: '→'; }
+
+    /* Grid: featured(col span 2) + 1 | then 2 + 1 below */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .p-card {
+      background: #e8eaed; border: 1px solid var(--border); border-radius: 10px;
+      overflow: hidden; display: flex; flex-direction: column;
+      text-decoration: none; color: inherit;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity .6s ease, transform .6s ease, box-shadow .3s, border-color .3s;
+    }
+    .p-card.visible { opacity: 1; transform: translateY(0); }
+    .p-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.09); transform: translateY(-4px); border-color: #ccd6f6; }
+    .p-card.featured { grid-column: 1 / span 2; }
+
+    .p-thumb { width: 100%; aspect-ratio: 16/9; position: relative; overflow: hidden; }
+    .p-card.featured .p-thumb { aspect-ratio: 16/8; }
+    .p-card:nth-child(1) .p-thumb { background: linear-gradient(135deg, #dbeafe 0%, #ede9fe 100%); }
+    .p-card:nth-child(2) .p-thumb { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); }
+    .p-card:nth-child(3) .p-thumb { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); }
+    .p-card:nth-child(4) .p-thumb { background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); }
+    .p-thumb svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    .p-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+    .p-tags { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .9rem; }
+    .p-tag {
+      font-size: .7rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+      padding: .28rem .7rem; border-radius: 4px;
+      background: var(--accent2); color: var(--accent);
+    }
+    .p-title {
+      font-family: var(--ff-serif); font-size: 1.3rem; font-weight: 400;
+      color: var(--ink); line-height: 1.25; margin-bottom: .5rem;
+    }
+    .p-card.featured .p-title { font-size: 1.6rem; }
+    .p-desc { font-size: .88rem; color: var(--muted); line-height: 1.7; flex: 1; }
+    .p-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--border);
+    }
+    .p-year { font-size: .75rem; color: var(--muted); font-weight: 500; }
+    .p-link {
+      font-size: .78rem; font-weight: 600; color: var(--accent); text-decoration: none;
+      display: inline-flex; align-items: center; gap: .3rem; transition: gap .2s;
+    }
+    .p-link:hover { gap: .5rem; }
+    .p-link::after { content: '↗'; }
+
+    /* ─── EXPERIENCE ─── */
+    #experience { background: #f0f2f5; }
+    .exp-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 5rem; }
+    .timeline { display: flex; flex-direction: column; }
+    .tl-item {
+      display: grid; grid-template-columns: 90px 18px 1fr; gap: 0 1.2rem;
+      padding-bottom: 2.8rem; position: relative;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .tl-item.visible { opacity: 1; transform: none; }
+    .tl-year {
+      font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+      color: var(--muted); padding-top: 3px; text-align: right; grid-column: 1;
+    }
+    .tl-spine {
+      grid-column: 2; display: flex; flex-direction: column; align-items: center;
+    }
+    .tl-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #e8eaed; border: 2px solid var(--accent);
+      flex-shrink: 0; position: relative; z-index: 1; margin-top: 3px;
+    }
+    .tl-item.current .tl-dot { background: var(--accent); box-shadow: 0 0 0 4px var(--accent2); }
+    .tl-line {
+      width: 1px; flex: 1; background: var(--border); margin-top: 4px;
+    }
+    .tl-item:last-child .tl-line { display: none; }
+    .tl-content { grid-column: 3; }
+    .tl-company { font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: .3rem; }
+    .tl-role { font-family: var(--ff-serif); font-size: 1.2rem; font-weight: 400; color: var(--ink); margin-bottom: .5rem; }
+    .tl-desc { font-size: .88rem; color: var(--muted); line-height: 1.7; }
+
+    /* ─── TESTIMONIALS ─── */
+    #testimonials { background: #e6e9ee; }
+    .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 3rem; }
+    .testi-card {
+      background: #e8eaed; border: 1px solid var(--border); border-radius: 10px;
+      padding: 2rem; display: flex; flex-direction: column; gap: 1.2rem;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .testi-card.visible { opacity: 1; transform: none; }
+    .testi-stars { color: #f59e0b; font-size: 1rem; letter-spacing: .1em; }
+    .testi-quote { font-family: var(--ff-serif); font-size: 1.05rem; font-style: italic; font-weight: 300; line-height: 1.65; color: var(--ink); }
+    .testi-author { display: flex; align-items: center; gap: .85rem; margin-top: auto; }
+    .testi-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--ff-serif); font-size: 1rem; font-weight: 400; flex-shrink: 0;
+    }
+    .testi-avatar.a1 { background: #dbeafe; color: #1d4ed8; }
+    .testi-avatar.a2 { background: #d1fae5; color: #065f46; }
+    .testi-avatar.a3 { background: #ede9fe; color: #6d28d9; }
+    .testi-name { font-size: .88rem; font-weight: 600; color: var(--ink); }
+    .testi-meta { font-size: .78rem; color: var(--muted); }
+
+    /* ─── CONTACT ─── */
+    #contact { background: var(--ink); }
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    #contact .section-tag { color: #93c5fd; }
+    #contact .section-heading { color: var(--white); }
+    #contact .section-heading em { color: #93c5fd; }
+    #contact .section-sub { color: #9ca3af; }
+    .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .form-group { display: flex; flex-direction: column; gap: .45rem; }
+    .form-group label { font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #9ca3af; }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 6px; padding: .75rem 1rem; font-size: .92rem;
+      font-family: var(--ff-sans); color: var(--white); outline: none;
+      transition: border-color .2s, background .2s; resize: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(255,255,255,.25); }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: #93c5fd; background: rgba(255,255,255,.08); }
+    .form-group select option { background: #1c1b19; color: var(--white); }
+    .form-group textarea { height: 120px; }
+    .btn-submit {
+      display: inline-flex; align-items: center; gap: .6rem;
+      padding: .85rem 2.2rem; background: var(--accent); color: var(--white);
+      font-size: .9rem; font-weight: 600; border: none; border-radius: 6px;
+      cursor: pointer; font-family: var(--ff-sans);
+      transition: background .2s, transform .2s; align-self: flex-start;
+    }
+    .btn-submit:hover { background: #1d4ed8; transform: translateY(-2px); }
+    .btn-submit::after { content: '→'; }
+    .contact-info { display: flex; flex-direction: column; gap: 2rem; padding-top: .5rem; }
+    .ci-label { font-size: .72rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #6b7280; margin-bottom: .3rem; }
+    .ci-value { font-family: var(--ff-serif); font-size: 1.1rem; color: var(--white); font-weight: 300; text-decoration: none; transition: color .2s; display: block; }
+    a.ci-value:hover { color: #93c5fd; }
+    .social-links { display: flex; gap: .8rem; flex-wrap: wrap; margin-top: .5rem; }
+    .social-link {
+      display: inline-flex; align-items: center; padding: .5rem 1rem;
+      border: 1px solid rgba(255,255,255,.12); border-radius: 6px;
+      font-size: .8rem; font-weight: 500; color: #9ca3af; text-decoration: none;
+      transition: border-color .2s, color .2s;
+    }
+    .social-link:hover { border-color: #93c5fd; color: #93c5fd; }
+
+    /* ─── FOOTER ─── */
+    footer { background: #131211; border-top: 1px solid rgba(255,255,255,.06); padding: 2rem 0; }
+    .footer-inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-name { font-family: var(--ff-serif); font-size: 1.1rem; color: rgba(255,255,255,.4); font-weight: 300; }
+    .footer-copy { font-size: .78rem; color: #4b5563; }
+    .footer-links { display: flex; gap: 1.8rem; }
+    .footer-links a { font-size: .78rem; color: #4b5563; text-decoration: none; transition: color .2s; }
+    .footer-links a:hover { color: rgba(255,255,255,.5); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 960px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-card { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .p-card.featured { grid-column: 1; }
+      .exp-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 64px 0; }
+      .clients-inner { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-name">Alex <span>Morgan</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+    </ul>
+    <a href="#contact" class="nav-btn">Get in Touch</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">Available for hire</div>
+      <h1 class="hero-title">
+        Product Designer<br>
+        &amp; <em>Creative</em><br>
+        <strong>Strategist</strong>
+      </h1>
+      <p class="hero-desc">
+        I design thoughtful digital products and brand experiences that connect with people — from early-stage startups to Fortune 500 companies.
+      </p>
+      <div class="hero-actions">
+        <a href="#portfolio" class="btn-solid">View Portfolio</a>
+        <a href="#contact" class="btn-outline">Let's Talk</a>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <div class="avatar">A</div>
+        <div>
+          <div class="card-name">Alex Morgan</div>
+          <div class="card-role">Senior Product Designer</div>
+        </div>
+      </div>
+      <div class="card-available">Open to opportunities</div>
+      <div class="card-stats">
+        <div><div class="card-stat-val">8+</div><div class="card-stat-lbl">Years Exp.</div></div>
+        <div><div class="card-stat-val">64</div><div class="card-stat-lbl">Projects</div></div>
+        <div><div class="card-stat-val">48</div><div class="card-stat-lbl">Clients</div></div>
+        <div><div class="card-stat-val">12</div><div class="card-stat-lbl">Awards</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<div id="clients">
+  <div class="clients-inner">
+    <span class="clients-label">Worked with</span>
+    <div class="clients-logos">
+      <span class="logo-item">Stripe</span>
+      <span class="logo-item">Notion</span>
+      <span class="logo-item">Figma</span>
+      <span class="logo-item">Linear</span>
+      <span class="logo-item">Vercel</span>
+      <span class="logo-item">Shopify</span>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div>
+        <p class="section-tag">About Me</p>
+        <h2 class="section-heading">Designing with<br><em>purpose</em> and<br>precision.</h2>
+      </div>
+      <div>
+        <div class="about-body">
+          <p>I'm a product designer with <strong>8 years of experience</strong> crafting digital experiences across SaaS, fintech, and consumer products. I believe great design is invisible — it solves problems so elegantly that the solution feels inevitable.</p>
+          <p>My work spans the full product lifecycle: from user research and strategy through to interaction design, design systems, and front-end implementation. I collaborate closely with engineers and stakeholders to ship products that are both beautiful and functional.</p>
+          <p>When I'm not designing, I write about design systems, speak at conferences, and mentor junior designers breaking into the industry.</p>
+        </div>
+        <div class="skills-grid">
+          <span class="skill-item">Product Design</span>
+          <span class="skill-item">UX Research</span>
+          <span class="skill-item">Design Systems</span>
+          <span class="skill-item">Interaction Design</span>
+          <span class="skill-item">Figma & Sketch</span>
+          <span class="skill-item">Prototyping</span>
+          <span class="skill-item">Brand Identity</span>
+          <span class="skill-item">HTML / CSS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="container">
+    <div class="portfolio-header">
+      <div>
+        <p class="section-tag">Selected Work</p>
+        <h2 class="section-heading">Recent Projects</h2>
+      </div>
+      <a href="#" class="view-all">View All Work</a>
+    </div>
+
+    <div class="portfolio-grid">
+
+      <!-- Card 1 — featured, spans 2 cols -->
+      <a href="#" class="p-card featured">
+        <div class="p-thumb">
+          <svg viewBox="0 0 800 360" fill="none" preserveAspectRatio="xMidYMid slice">
+            <rect x="60" y="40" width="300" height="200" rx="12" fill="white" fill-opacity=".7"/>
+            <rect x="80" y="60" width="120" height="8" rx="4" fill="#1a56db" fill-opacity=".4"/>
+            <rect x="80" y="78" width="200" height="6" rx="3" fill="#1a56db" fill-opacity=".2"/>
+            <rect x="80" y="92" width="160" height="6" rx="3" fill="#1a56db" fill-opacity=".2"/>
+            <rect x="80" y="118" width="240" height="80" rx="8" fill="#1a56db" fill-opacity=".1" stroke="#1a56db" stroke-opacity=".2" stroke-width="1"/>
+            <rect x="420" y="50" width="320" height="240" rx="12" fill="white" fill-opacity=".5"/>
+            <circle cx="580" cy="170" r="70" fill="#1a56db" fill-opacity=".07" stroke="#1a56db" stroke-opacity=".2" stroke-width="1"/>
+            <circle cx="580" cy="170" r="40" fill="#1a56db" fill-opacity=".1" stroke="#1a56db" stroke-opacity=".25" stroke-width="1"/>
+            <line x1="420" y1="120" x2="740" y2="120" stroke="#1a56db" stroke-opacity=".1" stroke-width="1"/>
+            <line x1="420" y1="170" x2="740" y2="170" stroke="#1a56db" stroke-opacity=".1" stroke-width="1"/>
+            <line x1="420" y1="220" x2="740" y2="220" stroke="#1a56db" stroke-opacity=".1" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="p-body">
+          <div class="p-tags">
+            <span class="p-tag">SaaS</span>
+            <span class="p-tag">Product Design</span>
+            <span class="p-tag">Design System</span>
+          </div>
+          <div class="p-title">Meridian — Analytics Dashboard Redesign</div>
+          <p class="p-desc">Led end-to-end redesign of a complex B2B analytics platform serving 40,000+ users. Reduced onboarding time by 38% and increased daily active usage by 27% through improved information architecture and interaction patterns.</p>
+          <div class="p-footer">
+            <span class="p-year">2024</span>
+            <span class="p-link">View Case Study</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 2 -->
+      <a href="#" class="p-card">
+        <div class="p-thumb">
+          <svg viewBox="0 0 400 225" fill="none" preserveAspectRatio="xMidYMid slice">
+            <circle cx="140" cy="112" r="70" fill="#16a34a" fill-opacity=".1" stroke="#16a34a" stroke-opacity=".2" stroke-width="1"/>
+            <circle cx="140" cy="112" r="40" fill="#16a34a" fill-opacity=".12" stroke="#16a34a" stroke-opacity=".3" stroke-width="1"/>
+            <rect x="230" y="55" width="140" height="16" rx="5" fill="#16a34a" fill-opacity=".2"/>
+            <rect x="230" y="82" width="110" height="10" rx="4" fill="#16a34a" fill-opacity=".15"/>
+            <rect x="230" y="102" width="130" height="10" rx="4" fill="#16a34a" fill-opacity=".1"/>
+            <rect x="230" y="140" width="140" height="42" rx="8" fill="#16a34a" fill-opacity=".1" stroke="#16a34a" stroke-opacity=".2" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="p-body">
+          <div class="p-tags">
+            <span class="p-tag" style="background:#d1fae5;color:#065f46;">Fintech</span>
+            <span class="p-tag" style="background:#d1fae5;color:#065f46;">Mobile</span>
+          </div>
+          <div class="p-title">Folio — Personal Finance App</div>
+          <p class="p-desc">Mobile-first finance app with intelligent budgeting and goal tracking. Shipped to 120k+ users on iOS and Android.</p>
+          <div class="p-footer">
+            <span class="p-year">2023</span>
+            <span class="p-link">View Case Study</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 3 -->
+      <a href="#" class="p-card">
+        <div class="p-thumb">
+          <svg viewBox="0 0 400 225" fill="none" preserveAspectRatio="xMidYMid slice">
+            <rect x="40" y="30" width="320" height="36" rx="7" fill="#92400e" fill-opacity=".1" stroke="#92400e" stroke-opacity=".15" stroke-width="1"/>
+            <rect x="40" y="80" width="145" height="110" rx="8" fill="#92400e" fill-opacity=".1" stroke="#92400e" stroke-opacity=".15" stroke-width="1"/>
+            <rect x="196" y="80" width="164" height="52" rx="8" fill="#92400e" fill-opacity=".12" stroke="#92400e" stroke-opacity=".15" stroke-width="1"/>
+            <rect x="196" y="140" width="164" height="50" rx="8" fill="#92400e" fill-opacity=".08" stroke="#92400e" stroke-opacity=".15" stroke-width="1"/>
+            <rect x="56" y="100" width="80" height="5" rx="2.5" fill="#92400e" fill-opacity=".3"/>
+            <rect x="56" y="116" width="108" height="5" rx="2.5" fill="#92400e" fill-opacity=".15"/>
+          </svg>
+        </div>
+        <div class="p-body">
+          <div class="p-tags">
+            <span class="p-tag" style="background:#fef3c7;color:#92400e;">E-commerce</span>
+            <span class="p-tag" style="background:#fef3c7;color:#92400e;">Branding</span>
+          </div>
+          <div class="p-title">Harvest — Artisan Food Marketplace</div>
+          <p class="p-desc">Complete brand identity and e-commerce UX for a curated marketplace. 220% conversion increase post-launch.</p>
+          <div class="p-footer">
+            <span class="p-year">2023</span>
+            <span class="p-link">View Case Study</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 4 -->
+      <a href="#" class="p-card">
+        <div class="p-thumb">
+          <svg viewBox="0 0 400 225" fill="none" preserveAspectRatio="xMidYMid slice">
+            <circle cx="200" cy="112" r="75" stroke="#be185d" stroke-opacity=".18" stroke-width="1" fill="#be185d" fill-opacity=".05"/>
+            <circle cx="200" cy="112" r="50" stroke="#be185d" stroke-opacity=".22" stroke-width="1" fill="#be185d" fill-opacity=".07"/>
+            <circle cx="200" cy="112" r="25" fill="#be185d" fill-opacity=".12" stroke="#be185d" stroke-opacity=".3" stroke-width="1"/>
+            <line x1="40" y1="112" x2="360" y2="112" stroke="#be185d" stroke-opacity=".1" stroke-width="1"/>
+            <line x1="200" y1="30" x2="200" y2="194" stroke="#be185d" stroke-opacity=".1" stroke-width="1"/>
+            <rect x="40" y="28" width="70" height="22" rx="5" fill="#be185d" fill-opacity=".1"/>
+            <rect x="290" y="170" width="70" height="22" rx="5" fill="#be185d" fill-opacity=".1"/>
+          </svg>
+        </div>
+        <div class="p-body">
+          <div class="p-tags">
+            <span class="p-tag" style="background:#fce7f3;color:#be185d;">Healthcare</span>
+            <span class="p-tag" style="background:#fce7f3;color:#be185d;">UX Research</span>
+          </div>
+          <div class="p-title">MedTrack — Patient Portal</div>
+          <p class="p-desc">Accessibility-first redesign for a regional hospital network. WCAG AA compliant, 91% patient satisfaction score.</p>
+          <div class="p-footer">
+            <span class="p-year">2022</span>
+            <span class="p-link">View Case Study</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="exp-grid">
+      <div>
+        <p class="section-tag">Experience</p>
+        <h2 class="section-heading">Where I've<br><em>worked</em> &<br>contributed.</h2>
+        <p class="section-sub">A decade of work across agencies, startups, and enterprise companies.</p>
+      </div>
+      <div class="timeline">
+        <div class="tl-item current">
+          <span class="tl-year">2022–Now</span>
+          <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-content">
+            <div class="tl-company">Meridian Labs</div>
+            <div class="tl-role">Lead Product Designer</div>
+            <p class="tl-desc">Leading design for a 3-person team shipping a B2B analytics product. Own the design system, user research, and cross-functional design reviews.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year">2019–2022</span>
+          <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-content">
+            <div class="tl-company">Clarity Agency</div>
+            <div class="tl-role">Senior UX Designer</div>
+            <p class="tl-desc">Designed digital products for clients across fintech, healthcare, and e-commerce. Managed junior designers and client relationships.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year">2016–2019</span>
+          <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-content">
+            <div class="tl-company">Beacon Studios</div>
+            <div class="tl-role">UI/UX Designer</div>
+            <p class="tl-desc">Built interfaces and design libraries for mobile apps. Grew from junior to mid-level, shipped 12 products in 3 years.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year">2015–2016</span>
+          <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-content">
+            <div class="tl-company">Freelance</div>
+            <div class="tl-role">Visual Designer</div>
+            <p class="tl-desc">Brand identity and web design for local businesses. First exposure to end-to-end client work and independent project management.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <p class="section-tag">Testimonials</p>
+    <h2 class="section-heading">What clients say</h2>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"Alex completely transformed how our users experience the product. The redesign didn't just look better — it changed how our whole team thinks about design."</p>
+        <div class="testi-author">
+          <div class="testi-avatar a1">S</div>
+          <div><div class="testi-name">Sarah Chen</div><div class="testi-meta">CPO, Meridian Labs</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"Rare to find someone who can hold both the strategic and pixel-level detail simultaneously. Alex delivered beyond the brief every single time."</p>
+        <div class="testi-author">
+          <div class="testi-avatar a2">M</div>
+          <div><div class="testi-name">Marcus Reid</div><div class="testi-meta">Founder, Harvest</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"The accessibility work Alex did on our patient portal improved outcomes for thousands of users. Thoughtful, rigorous, and genuinely cares about impact."</p>
+        <div class="testi-author">
+          <div class="testi-avatar a3">J</div>
+          <div><div class="testi-name">Dr. Jana Patel</div><div class="testi-meta">Director, MedTrack</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div>
+        <p class="section-tag">Get In Touch</p>
+        <h2 class="section-heading">Let's build<br>something <em>great</em><br>together.</h2>
+        <p class="section-sub">Open to full-time roles, freelance projects, and consulting engagements. Response within 24 hours.</p>
+        <div class="contact-info">
+          <div><div class="ci-label">Email</div><a href="mailto:alex@alexmorgan.design" class="ci-value">alex@alexmorgan.design</a></div>
+          <div><div class="ci-label">Based In</div><span class="ci-value">San Francisco, CA — Remote Friendly</span></div>
+          <div>
+            <div class="ci-label">Connect</div>
+            <div class="social-links">
+              <a href="#" class="social-link">LinkedIn</a>
+              <a href="#" class="social-link">Dribbble</a>
+              <a href="#" class="social-link">Twitter</a>
+              <a href="#" class="social-link">GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group"><label>First Name</label><input type="text" placeholder="Jane" /></div>
+          <div class="form-group"><label>Last Name</label><input type="text" placeholder="Smith" /></div>
+        </div>
+        <div class="form-group"><label>Email Address</label><input type="email" placeholder="jane@company.com" /></div>
+        <div class="form-group">
+          <label>Project Type</label>
+          <select>
+            <option value="" disabled selected>Select a type...</option>
+            <option>Product Design</option>
+            <option>Brand Identity</option>
+            <option>UX Audit</option>
+            <option>Design System</option>
+            <option>Consulting</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Message</label><textarea placeholder="Tell me about your project..."></textarea></div>
+        <button type="submit" class="btn-submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-name">Alex Morgan</span>
+    <div class="footer-links">
+      <a href="#about">About</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <span class="footer-copy">© 2026 Alex Morgan. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+  /* Navbar scroll shadow */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  /* Scroll reveal */
+  const reveals = document.querySelectorAll('.p-card, .tl-item, .testi-card');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const delay = Number(entry.target.dataset.delay || 0);
+        setTimeout(() => entry.target.classList.add('visible'), delay);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  reveals.forEach((el, i) => {
+    el.dataset.delay = (i % 3) * 120;
+    observer.observe(el);
+  });
+
+  /* Active nav link on scroll */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 130) current = s.id; });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+
+  /* Contact form */
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn-submit');
+    const original = btn.textContent;
+    btn.textContent = 'Sent ✓';
+    btn.style.background = '#16a34a';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.style.background = '';
+      btn.disabled = false;
+      e.target.reset();
+    }, 3000);
+  }
+</script>
+</body>
+</html>
